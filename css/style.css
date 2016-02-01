@@ -1,0 +1,30 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.play-container {
+	position: relative;
+}
+
+#box, #video-player, #video-box, #canvas-box {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#canvas-box {
+	z-index: 3;
+}
+
+#box {
+	background-image: url(./../images/baidu.png);
+	background-size: 50% auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 2;
+}
+
+#image-box {
+	display: none;
+}
