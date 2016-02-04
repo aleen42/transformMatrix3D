@@ -18,11 +18,12 @@
 }
 
 #box {
-	background-image: url(./../images/baidu.png);
-	background-size: 50% auto;
+	background-image: url(./../images/input.png);
+	background-size: auto 95%;
 	background-position: center;
 	background-repeat: no-repeat;
 	z-index: 2;
+
 }
 
 #image-box {

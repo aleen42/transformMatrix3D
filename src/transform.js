@@ -148,7 +148,7 @@ const transformObj = {
             }
 
             return results;
-        }().join(',') + ')';
+        }().join(',') + ')'; 
 
         obj.css({
             'width': transformObj._calWidth.toFixed(6) + 'px',

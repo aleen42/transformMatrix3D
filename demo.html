@@ -43,6 +43,8 @@
 		const parseData = JSON.parse(trackingData);
 		const upLimitNum = parseData['A'].length;
 
+		console.log(parseData['A'].length);
+
 		const x0 = parseData['A'][0].x;
 		const y0 = parseData['A'][0].y;
 		const x1 = parseData['C'][0].x;
@@ -115,7 +117,7 @@
 			/** set attrs for the obj */				
 			transformObj.setObj($('#box'), dest, logoWidth, logoHeight);
 			// canvasTransformObj.stretchImage(dest);
-		}, 20);
+		}, 1);
 	});
 	</script>
 </body>
