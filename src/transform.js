@@ -14,8 +14,8 @@
  *      - Document: transform.js
  *      - Author: aleen42
  *      - Description: include the function of transforming algorithmn
- *      - Create Time: Jan 25, 2015
- *      - Update Time: Jan 25, 2015 
+ *      - Create Time: Jan 25th, 2015
+ *      - Update Time: Jan 25th, 2015 
  *
  *
  **********************************************************************/
