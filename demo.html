@@ -79,6 +79,10 @@
                 	{ x: logoWidth, y: logoHeight }
                 ];
 
+                /** init the origin point */
+                const transformInstance = Object.create(transformObj);
+                transformInstance.init(origin);
+
                 /**
                  * [timeTick: time interval obj]
                  * @type {[type]}
@@ -96,13 +100,7 @@
                  * @type {Number}
                  */
                 let count = 0;
-
-                /** init the origin point */
-                transformObj.init(origin);
-
-                /** an array for getting where the logo should change to */
-                dest = [];
-
+                
                 /** this parameter means the ratio of the size of the video player divided by the origin size of the video */
                 let ratio = 1.0;
 
@@ -167,64 +165,70 @@
                     }
 
                     /** set attrs for the obj */
-                    transformObj.setObj($('#box1'), dest, logoWidth, logoHeight);
+                    transformInstance.setObj($('#box1'), dest, logoWidth, logoHeight);
                     // canvasTransformObj.stretchImage(dest);
                 }, 1);
             });
 
-			$.getJSON(stableDataPath, function(data) {
-				let stableTick = null;
+			// $.getJSON(stableDataPath, function(data) {
+			// 	let stableTick = null;
 
-				let count = 0;
+			// 	let count = 0;
+                
+   //              /**
+   //               * [dest: destination points array]
+   //               * @type {[type]}
+   //               */
+   //              let dest = null;
+                
+   //              const upLimitNum = data.frames;
 
-                const upLimitNum = data.frames;
+			// 	stableTick = setInterval(function () {
+			// 		const x0 = 880.0;
+	  //               const y0 = 72.0;
+	  //               const x1 = 1048.0;
+	  //               const y1 = 50.0;
+	  //               const x2 = 882.0;
+	  //               const y2 = 184.0;
+	  //               const x3 = 1048.0;
+	  //               const y3 = 162.0;
 
-				stableTick = setInterval(function () {
-					const x0 = 880.0;
-	                const y0 = 72.0;
-	                const x1 = 1048.0;
-	                const y1 = 50.0;
-	                const x2 = 882.0;
-	                const y2 = 184.0;
-	                const x3 = 1048.0;
-	                const y3 = 162.0;
+	  //               const logoWidth = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+	  //               const logoHeight = Math.sqrt((x2 - x0) * (x2 - x0) + (y2 - y0) * (y2 - y0));
 
-	                const logoWidth = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
-	                const logoHeight = Math.sqrt((x2 - x0) * (x2 - x0) + (y2 - y0) * (y2 - y0));
+	  //               /** clear array */
+   //                  dest = [];
 
-	                /** clear array */
-                    dest = [];
+   //                  if (count >= upLimitNum) {
+   //                      /** ... */
+   //                      $('#box2').show();
+   //                      count = 0;
+   //                  };
 
-                    if (count >= upLimitNum) {
-                        /** ... */
-                        $('#box2').show();
-                        count = 0;
-                    };
+   //                  /** [if: if outside video, then add the currentDataPeriod] */
+   //                  if (typeof(parseData[order[0]][count]) == 'undefined') {
+   //                      $('#box1').hide();
+   //                  } else {
+   //                      $('#box1').show();
+   //                  }
 
-                    /** [if: if outside video, then add the currentDataPeriod] */
-                    if (typeof(parseData[order[0]][count]) == 'undefined') {
-                        $('#box1').hide();
-                    } else {
-                        $('#box1').show();
-                    }
+   //                  /** [for: loop to get dest points] */
+   //                  for (let i = 0; i < order.length; i++) {
+   //                      const x = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].x * ratio : 0;
+   //                      const y = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].y * ratio : 0;
 
-                    /** [for: loop to get dest points] */
-                    for (let i = 0; i < order.length; i++) {
-                        const x = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].x * ratio : 0;
-                        const y = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].y * ratio : 0;
+   //                      dest.push({
+   //                          x: x,
+   //                          y: y
+   //                      });
+   //                  }
 
-                        dest.push({
-                            x: x,
-                            y: y
-                        });
-                    }
+   //                  /** set attrs for the obj */
+   //                  transformObj.setObj($('#box1'), dest, logoWidth, logoHeight);
+   //                  // canvasTransformObj.stretchImage(dest);
 
-                    /** set attrs for the obj */
-                    transformObj.setObj($('#box1'), dest, logoWidth, logoHeight);
-                    // canvasTransformObj.stretchImage(dest);
-
-				}, 1);
-			});		
+			// 	}, 1);
+			// });		
         });
     });
     </script>

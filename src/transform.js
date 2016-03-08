@@ -27,6 +27,12 @@
  * @type {Object}
  */
 const transformObj = {
+    _originPoints: null,
+
+    _calWidth: 0.0,
+
+    _calHeight: 0.0,
+
 	/**
 	 * [init: init function of transform obj]
 	 * @return {[type]} [description]
@@ -37,19 +43,19 @@ const transformObj = {
 		 * [_originPoints: the based point of the image]
 		 * @type {Array}
 		 */
-		this._originPoints = originPointArray;
+		transformObj._originPoints = originPointArray;
 
         /**
          * [calWidth: calculated width]
          * @type {Number}
          */
-        this._calWidth = 0.0;
+        transformObj._calWidth = 0.0;
         
         /**
          * [calHeight: calculated height]
          * @type {Number}
          */
-        this._calHeight = 0.0;
+        transformObj._calHeight = 0.0;
 	},
 
 	/**
@@ -63,25 +69,25 @@ const transformObj = {
         A = [];
         for (i = k = 0; k < 4; i = ++k) {
             A.push([
-                this._originPoints[i].x,
-                this._originPoints[i].y,
+                transformObj._originPoints[i].x,
+                transformObj._originPoints[i].y,
                 1,
                 0,
                 0,
                 0,
-                -this._originPoints[i].x * points[i].x,
-                -this._originPoints[i].y * points[i].x
+                -transformObj._originPoints[i].x * points[i].x,
+                -transformObj._originPoints[i].y * points[i].x
             ]);
 
             A.push([
                 0,
                 0,
                 0,
-                this._originPoints[i].x,
-                this._originPoints[i].y,
+                transformObj._originPoints[i].x,
+                transformObj._originPoints[i].y,
                 1,
-                -this._originPoints[i].x * points[i].y,
-                -this._originPoints[i].y * points[i].y
+                -transformObj._originPoints[i].x * points[i].y,
+                -transformObj._originPoints[i].y * points[i].y
             ]);
         }
 
@@ -101,8 +107,8 @@ const transformObj = {
 
         for (i = m = 0; m < 4; i = ++m) {
             lhs = numeric.dot(H, [
-                this._originPoints[i].x,
-                this._originPoints[i].y,
+                transformObj._originPoints[i].x,
+                transformObj._originPoints[i].y,
                 0,
                 1
             ]);
