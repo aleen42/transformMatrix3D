@@ -151,7 +151,7 @@
                     };
 
                     /** [if: if outside video, then add the currentDataPeriod] */
-                    if (typeof(parseData[order[0]][count]) == 'undefined') {
+                    if (typeof(parseData[order[0]][count + 1]) == 'undefined') {
                         obj.hide();
                     } else {
                         obj.show();
