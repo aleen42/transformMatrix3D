@@ -1,174 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>transformMatrix3D</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>transformMatrix3D</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
+
 <body>
-	<div class="play-container">
-		<div id="box"></div>
-		<video id="video-player" controls="controls" loop webkit-playsinline>
-			<source src="videos/test4.m4v" type="video/mp4" />
-		</video>
-		<!-- <canvas id="canvas-box" width="640" height="480"></canvas> -->
-		<!-- <div id="video-box"></div> -->
-	</div>
-	<img src="./images/testImg.png" id="image-box">
-	<script type="text/javascript" src="src/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript" src="src/matrix.min.js"></script>
-	<script type="text/javascript" src="src/numeric-1.2.6.min.js"></script>
-	<!-- <script type="text/javascript" src="src/data.min.js"></script> -->
-	<script type="text/javascript" src="src/transform.js"></script>
-	<script type="text/javascript">
-	$(document).ready(function () {
-		"use strict";
-		const $video = $('#video-player');
-	
-		canvasTransformObj.init($('#canvas-box')[0], $('#image-box')[0], $('#canvas-box').width(), $('#canvas-box').height());
-		
-		const videoFPS = 23.98;
+    <div class="play-container">
+        <div id="box1" class="mask"></div>
+        <div id="box2" class="mask"></div>
+        <video id="video-player" controls="controls" loop webkit-playsinline>
+            <source src="videos/test4.m4v" type="video/mp4" />
+        </video>
+        <!-- <canvas id="canvas-box" width="640" height="480"></canvas> -->
+        <!-- <div id="video-box"></div> -->
+    </div>
+    <img src="./images/testImg.png" id="image-box">
+    <script type="text/javascript" src="src/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="src/matrix.min.js"></script>
+    <script type="text/javascript" src="src/numeric-1.2.6.min.js"></script>
+    <!-- <script type="text/javascript" src="src/data.min.js"></script> -->
+    <script type="text/javascript" src="src/transform.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        "use strict";
+        const $video = $('#video-player');
 
-		/** get the upper limit */
-		// const parseData = JSON.parse(trackingData);
-		const dataPath = './data.json';
-		$.getJSON(dataPath, function(data) {
-			/*optional stuff to do after success */
-			let parseData = data[0].data;
+        canvasTransformObj.init($('#canvas-box')[0], $('#image-box')[0], $('#canvas-box').width(), $('#canvas-box').height());
 
-			const dataPeriod = [];
+        const videoFPS = 23.98;
 
-			for (let i = 0; i < data.length; i++) {
-				dataPeriod.push(data[i].startFrame);
-			}
+        /** get the upper limit */
+        // const parseData = JSON.parse(trackingData);
+        const dataPath = './data.json';
+        const stableDataPath = "./stable.json";
 
-			const videoWidth = data.width;
-			const videoHeight = data.height;
+        $video.on('canplay', function() {
+            $.getJSON(dataPath, function(data) {
+                /*optional stuff to do after success */
+                let parseData = data[0].data;
 
-			$('#canvas-box').width(videoWidth);
-			$('#canvas-box').height(videoHeight);
-			$('#canvas-box').attr({
-				'width': videoWidth,
-				'height': videoHeight
-			});
+                const dataPeriod = [];
 
+                for (let i = 0; i < data.length; i++) {
+                    dataPeriod.push(data[i].startFrame);
+                }
 
-			const upLimitNum = data.frames;
+                const videoWidth = data.width;
+                const videoHeight = data.height;
 
-
-			// console.log(parseData['A'].length);
-
-			const x0 = parseData['A'][0].x;
-			const y0 = parseData['A'][0].y;
-			const x1 = parseData['C'][0].x;
-			const y1 = parseData['C'][0].y;
-			const x2 = parseData['B'][0].x;
-			const y2 = parseData['B'][0].y;
-
-			const logoWidth = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
-			const logoHeight = Math.sqrt((x2 - x0) * (x2 - x0) + (y2 - y0) * (y2 - y0));
-
-			const origin = [
-				{x: 0, y: 0},
-				{x: 0, y: logoHeight},
-				{x: logoWidth, y: 0},
-				{x: logoWidth, y: logoHeight}
-			];
-
-			/**
-			 * [timeTick: time interval obj]
-			 * @type {[type]}
-			 */
-			let timeTick = null;
-
-			/**
-			 * [dest: destination points array]
-			 * @type {[type]}
-			 */
-			let dest = null;
-
-			/**
-			 * [count: frames number]
-			 * @type {Number}
-			 */
-			let count = 0;
-
-			/** init the origin point */
-			transformObj.init(origin);
-
-			dest = [];
-
-			let isWidth = false;
-			let ratio = 1.0;
-
-			// canvasTransformObj.stretchImage($('#imgSrc')[0], dest, $('#canvas-box')[0])
-			$video.on('canplay', function () {
-				if (!isWidth) {
-					isWidth = true;
-
-					timeTick = setInterval(function () {
-						if ($video[0].readyState !== 4) {
-							return;
-						}
-
-						count = Math.floor($video[0].currentTime * videoFPS);
-						
-						let currentDataPeriod = -1;
-						for (let i = 0; i < dataPeriod.length; i++) {
-							if (count >= dataPeriod[i]) {
-								currentDataPeriod += 1;
-							}					
-						}
-
-						ratio = $video.width() / data[0].width;
-						parseData = data[currentDataPeriod].data;
-						count -= data[currentDataPeriod].startFrame;
+                $('#canvas-box').width(videoWidth);
+                $('#canvas-box').height(videoHeight);
+                $('#canvas-box').attr({
+                    'width': videoWidth,
+                    'height': videoHeight
+                });
 
 
-						/** clear array */
-						dest = [];
+                const upLimitNum = data.frames;
 
-						/** array order(canvas): left-top -> left-bottom -> right-top -> right-bottom */
-						// const order = ['A', 'C', 'B', 'D'];
-						/** array order(css): left-top -> right-top -> left-bottom -> right-bottom */
-						const order = ['A', 'B', 'C', 'D'];
 
-						/** [if: check whether frame number is over than the upper limit] */
-						if (count >= upLimitNum) {
-							/** ... */
-							$('#box').show();
-							count = 0;
-						};
+                // console.log(parseData['A'].length);
 
-						/** [if: if outside video, then add the currentDataPeriod] */
-						if (typeof(parseData[order[0]][count]) == 'undefined') {
-							$('#box').hide();
-						} else {
-							$('#box').show();
-						}
+                const x0 = parseData['A'][0].x;
+                const y0 = parseData['A'][0].y;
+                const x1 = parseData['C'][0].x;
+                const y1 = parseData['C'][0].y;
+                const x2 = parseData['B'][0].x;
+                const y2 = parseData['B'][0].y;
 
-						/** [for: loop to get dest points] */
-						for (let i = 0; i < order.length; i++) {
-							const x = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].x * ratio : 0;
-							const y = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].y * ratio : 0;
-							
-							dest.push({
-								x: x,
-								y: y
-							});	
-						}
+                const logoWidth = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+                const logoHeight = Math.sqrt((x2 - x0) * (x2 - x0) + (y2 - y0) * (y2 - y0));
 
-						/** set attrs for the obj */				
-						transformObj.setObj($('#box'), dest, logoWidth, logoHeight);
-						// canvasTransformObj.stretchImage(dest);
-					}, 1);
-				}
-			});
+                const origin = [{
+                    x: 0,
+                    y: 0
+                }, {
+                    x: 0,
+                    y: logoHeight
+                }, {
+                    x: logoWidth,
+                    y: 0
+                }, {
+                    x: logoWidth,
+                    y: logoHeight
+                }];
 
-			
-		});
-		
-	});
-	</script>
+                /**
+                 * [timeTick: time interval obj]
+                 * @type {[type]}
+                 */
+                let timeTick = null;
+
+                /**
+                 * [dest: destination points array]
+                 * @type {[type]}
+                 */
+                let dest = null;
+
+                /**
+                 * [count: frames number]
+                 * @type {Number}
+                 */
+                let count = 0;
+
+                /** init the origin point */
+                transformObj.init(origin);
+
+                dest = [];
+
+                let isWidth = false;
+                let ratio = 1.0;
+
+                // canvasTransformObj.stretchImage($('#imgSrc')[0], dest, $('#canvas-box')[0])
+                if (!isWidth) {
+                    isWidth = true;
+
+                    timeTick = setInterval(function() {
+                        if ($video[0].readyState !== 4) {
+                            return;
+                        }
+
+                        count = Math.floor($video[0].currentTime * videoFPS);
+
+                        let currentDataPeriod = -1;
+                        for (let i = 0; i < dataPeriod.length; i++) {
+                            if (count >= dataPeriod[i]) {
+                                currentDataPeriod += 1;
+                            }
+                        }
+
+                        ratio = $video.width() / data[0].width;
+                        parseData = data[currentDataPeriod].data;
+                        count -= data[currentDataPeriod].startFrame;
+
+
+                        /** clear array */
+                        dest = [];
+
+                        /** array order(canvas): left-top -> left-bottom -> right-top -> right-bottom */
+                        // const order = ['A', 'C', 'B', 'D'];
+                        /** array order(css): left-top -> right-top -> left-bottom -> right-bottom */
+                        const order = ['A', 'B', 'C', 'D'];
+
+                        /** [if: check whether frame number is over than the upper limit] */
+                        if (count >= upLimitNum) {
+                            /** ... */
+                            $('#box1').show();
+                            count = 0;
+                        };
+
+                        /** [if: if outside video, then add the currentDataPeriod] */
+                        if (typeof(parseData[order[0]][count]) == 'undefined') {
+                            $('#box1').hide();
+                        } else {
+                            $('#box1').show();
+                        }
+
+                        /** [for: loop to get dest points] */
+                        for (let i = 0; i < order.length; i++) {
+                            const x = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].x * ratio : 0;
+                            const y = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].y * ratio : 0;
+
+                            dest.push({
+                                x: x,
+                                y: y
+                            });
+                        }
+
+                        /** set attrs for the obj */
+                        transformObj.setObj($('#box1'), dest, logoWidth, logoHeight);
+                        // canvasTransformObj.stretchImage(dest);
+                    }, 1);
+                }
+            });
+
+			$.getJSON(stableDataPath, function(data) {
+
+			});		
+        });
+    });
+    </script>
 </body>
+
 </html>

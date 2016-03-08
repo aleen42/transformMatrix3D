@@ -7,7 +7,7 @@
 	position: relative;
 }
 
-#box, #video-player, #video-box, #canvas-box {
+.mask, #video-player, #video-box, #canvas-box {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -17,15 +17,22 @@
 	z-index: 3;
 }
 
-#box {
-	background-image: url(./../images/soundtooth_logo.png);
-	/*background-image: url(./../images/input.png);*/
-	/*background-image: url(./../images/google.png);*/
-	/*background-image: url(./../images/apple.png);*/
+.mask {
 	background-size: auto 50%;
 	background-position: center;
 	background-repeat: no-repeat;
 	z-index: 2;
+}
+
+#box1 {
+	background-image: url(./../images/soundtooth_logo.png);
+	/*background-image: url(./../images/input.png);*/
+	/*background-image: url(./../images/google.png);*/
+	/*background-image: url(./../images/apple.png);*/
+}
+
+#box2 {
+	background-image: url(./../images/libai.png);
 }
 
 #image-box {
