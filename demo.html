@@ -111,70 +111,65 @@
 
                 dest = [];
 
-                let isWidth = false;
                 let ratio = 1.0;
 
                 // canvasTransformObj.stretchImage($('#imgSrc')[0], dest, $('#canvas-box')[0])
-                if (!isWidth) {
-                    isWidth = true;
+                timeTick = setInterval(function() {
+                    if ($video[0].readyState !== 4) {
+                        return;
+                    }
 
-                    timeTick = setInterval(function() {
-                        if ($video[0].readyState !== 4) {
-                            return;
+                    count = Math.floor($video[0].currentTime * videoFPS);
+
+                    let currentDataPeriod = -1;
+                    for (let i = 0; i < dataPeriod.length; i++) {
+                        if (count >= dataPeriod[i]) {
+                            currentDataPeriod += 1;
                         }
+                    }
 
-                        count = Math.floor($video[0].currentTime * videoFPS);
-
-                        let currentDataPeriod = -1;
-                        for (let i = 0; i < dataPeriod.length; i++) {
-                            if (count >= dataPeriod[i]) {
-                                currentDataPeriod += 1;
-                            }
-                        }
-
-                        ratio = $video.width() / data[0].width;
-                        parseData = data[currentDataPeriod].data;
-                        count -= data[currentDataPeriod].startFrame;
+                    ratio = $video.width() / data[0].width;
+                    parseData = data[currentDataPeriod].data;
+                    count -= data[currentDataPeriod].startFrame;
 
 
-                        /** clear array */
-                        dest = [];
+                    /** clear array */
+                    dest = [];
 
-                        /** array order(canvas): left-top -> left-bottom -> right-top -> right-bottom */
-                        // const order = ['A', 'C', 'B', 'D'];
-                        /** array order(css): left-top -> right-top -> left-bottom -> right-bottom */
-                        const order = ['A', 'B', 'C', 'D'];
+                    /** array order(canvas): left-top -> left-bottom -> right-top -> right-bottom */
+                    // const order = ['A', 'C', 'B', 'D'];
+                    /** array order(css): left-top -> right-top -> left-bottom -> right-bottom */
+                    const order = ['A', 'B', 'C', 'D'];
 
-                        /** [if: check whether frame number is over than the upper limit] */
-                        if (count >= upLimitNum) {
-                            /** ... */
-                            $('#box1').show();
-                            count = 0;
-                        };
+                    /** [if: check whether frame number is over than the upper limit] */
+                    if (count >= upLimitNum) {
+                        /** ... */
+                        $('#box1').show();
+                        count = 0;
+                    };
 
-                        /** [if: if outside video, then add the currentDataPeriod] */
-                        if (typeof(parseData[order[0]][count]) == 'undefined') {
-                            $('#box1').hide();
-                        } else {
-                            $('#box1').show();
-                        }
+                    /** [if: if outside video, then add the currentDataPeriod] */
+                    if (typeof(parseData[order[0]][count]) == 'undefined') {
+                        $('#box1').hide();
+                    } else {
+                        $('#box1').show();
+                    }
 
-                        /** [for: loop to get dest points] */
-                        for (let i = 0; i < order.length; i++) {
-                            const x = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].x * ratio : 0;
-                            const y = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].y * ratio : 0;
+                    /** [for: loop to get dest points] */
+                    for (let i = 0; i < order.length; i++) {
+                        const x = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].x * ratio : 0;
+                        const y = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].y * ratio : 0;
 
-                            dest.push({
-                                x: x,
-                                y: y
-                            });
-                        }
+                        dest.push({
+                            x: x,
+                            y: y
+                        });
+                    }
 
-                        /** set attrs for the obj */
-                        transformObj.setObj($('#box1'), dest, logoWidth, logoHeight);
-                        // canvasTransformObj.stretchImage(dest);
-                    }, 1);
-                }
+                    /** set attrs for the obj */
+                    transformObj.setObj($('#box1'), dest, logoWidth, logoHeight);
+                    // canvasTransformObj.stretchImage(dest);
+                }, 1);
             });
 
 			$.getJSON(stableDataPath, function(data) {
