@@ -24,46 +24,43 @@
     <!-- <script type="text/javascript" src="src/data.min.js"></script> -->
     <script type="text/javascript" src="src/transform.js"></script>
     <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         "use strict";
         const $video = $('#video-player');
-
-        canvasTransformObj.init($('#canvas-box')[0], $('#image-box')[0], $('#canvas-box').width(), $('#canvas-box').height());
+        // canvasTransformObj.init($('#canvas-box')[0], $('#image-box')[0], $('#canvas-box').width(), $('#canvas-box').height());
 
         const videoFPS = 23.98;
 
         /** get the upper limit */
-        // const parseData = JSON.parse(trackingData);
         const dataPath = './data.json';
         const stableDataPath = "./stable.json";
 
-        $video.on('canplay', function() {
-            $.getJSON(dataPath, function(data) {
-                /*optional stuff to do after success */
+        $video.on('canplay', function () {
+            $.getJSON(dataPath, function (data) {
+                /** optional stuff to do after success */
                 let parseData = data[0].data;
 
+                /** an array to store period of showing boxes */
                 const dataPeriod = [];
-
+                /** [for: to initiate the dataPeriod array] */
                 for (let i = 0; i < data.length; i++) {
                     dataPeriod.push(data[i].startFrame);
                 }
 
-                const videoWidth = data.width;
-                const videoHeight = data.height;
+                // const videoWidth = data.width;
+                // const videoHeight = data.height;
 
-                $('#canvas-box').width(videoWidth);
-                $('#canvas-box').height(videoHeight);
-                $('#canvas-box').attr({
-                    'width': videoWidth,
-                    'height': videoHeight
-                });
+                // $('#canvas-box').width(videoWidth);
+                // $('#canvas-box').height(videoHeight);
+                // $('#canvas-box').attr({
+                //     'width': videoWidth,
+                //     'height': videoHeight
+                // });
 
-
+                /** to store the number of frames */
                 const upLimitNum = data.frames;
 
-
-                // console.log(parseData['A'].length);
-
+                /** get point A, B, C from the first frame to calculate the width and height of the logo */
                 const x0 = parseData['A'][0].x;
                 const y0 = parseData['A'][0].y;
                 const x1 = parseData['C'][0].x;
@@ -74,19 +71,13 @@
                 const logoWidth = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
                 const logoHeight = Math.sqrt((x2 - x0) * (x2 - x0) + (y2 - y0) * (y2 - y0));
 
-                const origin = [{
-                    x: 0,
-                    y: 0
-                }, {
-                    x: 0,
-                    y: logoHeight
-                }, {
-                    x: logoWidth,
-                    y: 0
-                }, {
-                    x: logoWidth,
-                    y: logoHeight
-                }];
+                /** setup the origin points of the logo */
+                const origin = [
+                	{ x: 0, y: 0 },
+                	{ x: 0, y: logoHeight },
+                	{ x: logoWidth, y: 0 },
+                	{ x: logoWidth, y: logoHeight }
+                ];
 
                 /**
                  * [timeTick: time interval obj]
@@ -109,18 +100,23 @@
                 /** init the origin point */
                 transformObj.init(origin);
 
+                /** an array for getting where the logo should change to */
                 dest = [];
 
+                /** this parameter means the ratio of the size of the video player divided by the origin size of the video */
                 let ratio = 1.0;
 
                 // canvasTransformObj.stretchImage($('#imgSrc')[0], dest, $('#canvas-box')[0])
-                timeTick = setInterval(function() {
+                timeTick = setInterval(function () {
+                    /** [if: update box when the video is ready] */
                     if ($video[0].readyState !== 4) {
                         return;
                     }
 
+                    /** to calculate the index of frames */
                     count = Math.floor($video[0].currentTime * videoFPS);
 
+                    /** to calculate the current period */
                     let currentDataPeriod = -1;
                     for (let i = 0; i < dataPeriod.length; i++) {
                         if (count >= dataPeriod[i]) {
@@ -128,10 +124,14 @@
                         }
                     }
 
+                    /** to calculate current ratio */
                     ratio = $video.width() / data[0].width;
-                    parseData = data[currentDataPeriod].data;
-                    count -= data[currentDataPeriod].startFrame;
 
+                    /** to calculate current data sets of points */
+                    parseData = data[currentDataPeriod].data;
+
+                    /** to re-calculate the index */
+                    count -= data[currentDataPeriod].startFrame;
 
                     /** clear array */
                     dest = [];
@@ -173,7 +173,57 @@
             });
 
 			$.getJSON(stableDataPath, function(data) {
+				let stableTick = null;
 
+				let count = 0;
+
+                const upLimitNum = data.frames;
+
+				stableTick = setInterval(function () {
+					const x0 = 880.0;
+	                const y0 = 72.0;
+	                const x1 = 1048.0;
+	                const y1 = 50.0;
+	                const x2 = 882.0;
+	                const y2 = 184.0;
+	                const x3 = 1048.0;
+	                const y3 = 162.0;
+
+	                const logoWidth = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+	                const logoHeight = Math.sqrt((x2 - x0) * (x2 - x0) + (y2 - y0) * (y2 - y0));
+
+	                /** clear array */
+                    dest = [];
+
+                    if (count >= upLimitNum) {
+                        /** ... */
+                        $('#box2').show();
+                        count = 0;
+                    };
+
+                    /** [if: if outside video, then add the currentDataPeriod] */
+                    if (typeof(parseData[order[0]][count]) == 'undefined') {
+                        $('#box1').hide();
+                    } else {
+                        $('#box1').show();
+                    }
+
+                    /** [for: loop to get dest points] */
+                    for (let i = 0; i < order.length; i++) {
+                        const x = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].x * ratio : 0;
+                        const y = (typeof(parseData[order[i]][count]) != 'undefined') ? parseData[order[i]][count].y * ratio : 0;
+
+                        dest.push({
+                            x: x,
+                            y: y
+                        });
+                    }
+
+                    /** set attrs for the obj */
+                    transformObj.setObj($('#box1'), dest, logoWidth, logoHeight);
+                    // canvasTransformObj.stretchImage(dest);
+
+				}, 1);
 			});		
         });
     });
