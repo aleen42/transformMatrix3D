@@ -29,9 +29,9 @@
 const transformObj = {
     _originPoints: null,
 
-    _calWidth: 0.0,
+    _calWidth: null,
 
-    _calHeight: 0.0,
+    _calHeight: null,
 
 	/**
 	 * [init: init function of transform obj]
@@ -43,19 +43,19 @@ const transformObj = {
 		 * [_originPoints: the based point of the image]
 		 * @type {Array}
 		 */
-		transformObj._originPoints = originPointArray;
+		this._originPoints = originPointArray;
 
         /**
          * [calWidth: calculated width]
          * @type {Number}
          */
-        transformObj._calWidth = 0.0;
+        this._calWidth = 0.0;
         
         /**
          * [calHeight: calculated height]
          * @type {Number}
          */
-        transformObj._calHeight = 0.0;
+        this._calHeight = 0.0;
 	},
 
 	/**
@@ -69,25 +69,25 @@ const transformObj = {
         A = [];
         for (i = k = 0; k < 4; i = ++k) {
             A.push([
-                transformObj._originPoints[i].x,
-                transformObj._originPoints[i].y,
+                this._originPoints[i].x,
+                this._originPoints[i].y,
                 1,
                 0,
                 0,
                 0,
-                -transformObj._originPoints[i].x * points[i].x,
-                -transformObj._originPoints[i].y * points[i].x
+                -this._originPoints[i].x * points[i].x,
+                -this._originPoints[i].y * points[i].x
             ]);
 
             A.push([
                 0,
                 0,
                 0,
-                transformObj._originPoints[i].x,
-                transformObj._originPoints[i].y,
+                this._originPoints[i].x,
+                this._originPoints[i].y,
                 1,
-                -transformObj._originPoints[i].x * points[i].y,
-                -transformObj._originPoints[i].y * points[i].y
+                -this._originPoints[i].x * points[i].y,
+                -this._originPoints[i].y * points[i].y
             ]);
         }
 
@@ -107,8 +107,8 @@ const transformObj = {
 
         for (i = m = 0; m < 4; i = ++m) {
             lhs = numeric.dot(H, [
-                transformObj._originPoints[i].x,
-                transformObj._originPoints[i].y,
+                this._originPoints[i].x,
+                this._originPoints[i].y,
                 0,
                 1
             ]);
@@ -131,14 +131,16 @@ const transformObj = {
     setObj: function (obj, destPoints, objWidth, objHeight) {
         "use strict";
 
+        const _this = this;
+
         const transformData = 'matrix3d(' + function () {
             "use strict";
             let i, k, H, results;
             results = [];
-            H = transformObj.transformToMatrix(destPoints);
+            H = _this.transformToMatrix(destPoints);
 
-            transformObj._calWidth = transformObj._calWidth == 0 ? objWidth : transformObj._calWidth;
-            transformObj._calHeight = transformObj._calHeight == 0 ? objHeight : transformObj._calHeight;
+            _this._calWidth = _this._calWidth == 0 ? objWidth : _this._calWidth;
+            _this._calHeight = _this._calHeight == 0 ? objHeight : _this._calHeight;
 
             for (i = k = 0; k < 4; i = ++k) {
                 results.push(function () {
@@ -157,8 +159,8 @@ const transformObj = {
         }().join(',') + ')'; 
 
         obj.css({
-            'width': transformObj._calWidth.toFixed(6) + 'px',
-            'height': transformObj._calHeight.toFixed(6) + 'px',
+            'width': this._calWidth.toFixed(6) + 'px',
+            'height': this._calHeight.toFixed(6) + 'px',
             'transform': transformData,
             '-webkit-transform': transformData,
             '-ms-transform': transformData,

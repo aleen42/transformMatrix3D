@@ -21,7 +21,6 @@
 	background-size: auto 50%;
 	background-position: center;
 	background-repeat: no-repeat;
-	z-index: 2;
 }
 
 #box1 {
@@ -29,10 +28,12 @@
 	/*background-image: url(./../images/input.png);*/
 	/*background-image: url(./../images/google.png);*/
 	/*background-image: url(./../images/apple.png);*/
+	z-index: 2;
 }
 
 #box2 {
 	background-image: url(./../images/libai.png);
+	z-index: 3;
 }
 
 #image-box {

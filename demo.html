@@ -31,15 +31,21 @@
 
         const videoFPS = 23.98;
 
-        /** get the upper limit */
-        const dataPath = './data.json';
-        const stableDataPath = "./stable.json";
+        const transformInstances = [];
+
+        /**
+         * [timeTicks: time interval obj]
+         * @type {[type]}
+         */
+        const timeTicks = [];
 
         $video.on('canplay', function () {
-            initBox('./data.json', $('#box1'));
+            initBox('./data.json', $('#box1'), 0);
+
+            initBox('./stable.json', $('#box2'), 1);
         });
 
-        function initBox(path, obj) {
+        function initBox(path, obj, index) {
             $.getJSON(path, function (data) {
                 /** optional stuff to do after success */
                 let parseData = data[0].data;
@@ -84,14 +90,8 @@
                 ];
 
                 /** init the origin point */
-                const transformInstance = Object.create(transformObj);
-                transformInstance.init(origin);
-
-                /**
-                 * [timeTick: time interval obj]
-                 * @type {[type]}
-                 */
-                let timeTick = null;
+                transformInstances.push(Object.create(transformObj));
+                transformInstances[index].init(origin);
 
                 /**
                  * [dest: destination points array]
@@ -109,7 +109,7 @@
                 let ratio = 1.0;
 
                 // canvasTransformObj.stretchImage($('#imgSrc')[0], dest, $('#canvas-box')[0])
-                timeTick = setInterval(function () {
+                timeTicks.push(setInterval(function () {
                     /** [if: update box when the video is ready] */
                     if ($video[0].readyState !== 4) {
                         return;
@@ -169,9 +169,9 @@
                     }
 
                     /** set attrs for the obj */
-                    transformInstance.setObj(obj, dest, logoWidth, logoHeight);
+                    transformInstances[index].setObj(obj, dest, logoWidth, logoHeight);
                     // canvasTransformObj.stretchImage(dest);
-                }, 1);
+                }, 1));
             });
         }
     });
