@@ -40,10 +40,11 @@
 	border-radius: 4px;
 	font-size: 1.6em;
 	font-family: Arial;
-	color: rgba(255, 255, 255, 0.8);
+	padding: 0 5px;
+	color: #333;
 	background-color: rgba(0, 0, 0, 0.6);
-	transition: color 0.4s;
-	-webkit-transition: color 0.4s;
+	transition: color 0.2s;
+	-webkit-transition: color 0.2s;
 	z-index: 4;
 	left: 15px;
 	top: 15px;
