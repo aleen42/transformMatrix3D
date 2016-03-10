@@ -13,7 +13,8 @@
         <div id="box2" class="mask"></div>
         <div id="box3" class="mask">move</div>
         <video id="video-player" controls="controls" loop webkit-playsinline>
-            <source src="videos/test4.m4v" type="video/mp4" />
+            <source src="videos/output.mp4" type="video/mp4" />
+            <!-- <source src="videos/test4.m4v" type="video/mp4" /> -->
         </video>
         <!-- <canvas id="canvas-box" width="640" height="480"></canvas> -->
         <!-- <div id="video-box"></div> -->
@@ -43,9 +44,9 @@
         let upLimitNum = 0;
 
         $video.on('canplay', function () {
-            initBox('./data.json', $('#box1'), 0);
+            // initBox('./data.json', $('#box1'), 0);
 
-            initBox('./stable.json', $('#box2'), 1);
+            // initBox('./stable.json', $('#box2'), 1);
 
             initData('./static.json', $('#box3'));
         });
@@ -184,6 +185,8 @@
             $.getJSON('./static.json', function(data) {
                 /*optional stuff to do after success */
                 const parseData = data.data;
+
+                upLimitNum = data.frames;
 
                 /**
                  * [count: frames number]
