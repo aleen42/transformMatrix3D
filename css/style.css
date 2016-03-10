@@ -36,6 +36,19 @@
 	z-index: 3;
 }
 
+#box3 {
+	border-radius: 4px;
+	font-size: 2em;
+	color: #a10000;
+	padding: 5px;
+	background-color: rgba(0, 0, 0, 0.6);
+	transition: color 0.4s;
+	-webkit-transition: color 0.4s;
+	z-index: 4;
+	left: 15px;
+	top: 15px;
+}
+
 #image-box {
 	display: none;
 }

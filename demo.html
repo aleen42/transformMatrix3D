@@ -11,6 +11,7 @@
     <div class="play-container">
         <div id="box1" class="mask"></div>
         <div id="box2" class="mask"></div>
+        <div id="box3" class="mask">static</div>
         <video id="video-player" controls="controls" loop webkit-playsinline>
             <source src="videos/test4.m4v" type="video/mp4" />
         </video>
@@ -38,6 +39,8 @@
          * @type {[type]}
          */
         const timeTicks = [];
+
+        let upLimitNum = 0;
 
         $video.on('canplay', function () {
             initBox('./data.json', $('#box1'), 0);
@@ -68,7 +71,7 @@
                 // });
 
                 /** to store the number of frames */
-                const upLimitNum = data.frames;
+                upLimitNum = data.frames;
 
                 /** get point A, B, C from the first frame to calculate the width and height of the logo */
                 const x0 = parseData['A'][0].x;
@@ -172,6 +175,51 @@
                     transformInstances[index].setObj(obj, dest, logoWidth, logoHeight);
                     // canvasTransformObj.stretchImage(dest);
                 }, 1));
+            });
+        }
+
+        function initData(path, obj) {
+            $.getJSON('./static.json', function(data) {
+                /*optional stuff to do after success */
+                const parseData = data.data;
+
+                /**
+                 * [count: frames number]
+                 * @type {Number}
+                 */
+                let count = 0;
+
+                setInterval(function () {
+                    /** [if: update box when the video is ready] */
+                    if ($video[0].readyState !== 4) {
+                        return;
+                    }
+
+                    /** to calculate the index of frames */
+                    count = Math.floor($video[0].currentTime * videoFPS);
+
+                    /** [if: check whether frame number is over than the upper limit] */
+                    if (count >= upLimitNum) {
+                        /** ... */
+                        count = 0;
+                    };
+
+
+                    /** set attrs for the obj */
+                    const literal = parsedata[count].isStatic;
+
+                    if (literal == 'false') {
+                        obj.text('moving');
+                        obj.css({
+                            'color': '#60b17c'
+                        });
+                    } else {
+                        obj.text('static');
+                        obj.css({
+                            'color': '#a10000'
+                        });
+                    }
+                }, 1);
             });
         }
     });
