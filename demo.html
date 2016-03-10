@@ -11,7 +11,7 @@
     <div class="play-container">
         <div id="box1" class="mask"></div>
         <div id="box2" class="mask"></div>
-        <div id="box3" class="mask">static</div>
+        <div id="box3" class="mask">move</div>
         <video id="video-player" controls="controls" loop webkit-playsinline>
             <source src="videos/test4.m4v" type="video/mp4" />
         </video>
@@ -215,14 +215,12 @@
                     }
 
                     if (literal == 'false') {
-                        obj.text('moving');
                         obj.css({
-                            'color': '#60b17c'
+                            'color': 'rgba(255, 255, 255, 1)'
                         });
                     } else {
-                        obj.text('static');
                         obj.css({
-                            'color': '#a10000'
+                            'color': 'rgba(255, 255, 255, 1)'
                         });
                     }
                 }, 1);
