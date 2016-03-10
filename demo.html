@@ -46,6 +46,8 @@
             initBox('./data.json', $('#box1'), 0);
 
             initBox('./stable.json', $('#box2'), 1);
+
+            initData('./static.json', $('#box3'));
         });
 
         function initBox(path, obj, index) {
@@ -206,7 +208,11 @@
 
 
                     /** set attrs for the obj */
-                    const literal = parsedata[count].isStatic;
+                    const literal = parseData[count].isStatic;
+
+                    if (typeof(parseData[count + 1]) == 'undefined') {
+                        return;
+                    }
 
                     if (literal == 'false') {
                         obj.text('moving');
