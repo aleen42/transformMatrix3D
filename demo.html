@@ -13,8 +13,8 @@
         <div id="box2" class="mask"></div>
         <div id="box3" class="mask">move</div>
         <video id="video-player" controls="controls" loop webkit-playsinline>
-            <source src="videos/output.mp4" type="video/mp4" />
-            <!-- <source src="videos/test4.m4v" type="video/mp4" /> -->
+            <!-- <source src="videos/output.mp4" type="video/mp4" /> -->
+            <source src="videos/test4.m4v" type="video/mp4" />
         </video>
         <!-- <canvas id="canvas-box" width="640" height="480"></canvas> -->
         <!-- <div id="video-box"></div> -->
@@ -31,8 +31,7 @@
         const $video = $('#video-player');
         // canvasTransformObj.init($('#canvas-box')[0], $('#image-box')[0], $('#canvas-box').width(), $('#canvas-box').height());
 
-        // const videoFPS = 23.98;
-        const videoFPS = 25;
+        let videoFPS = 25;
 
         const transformInstances = [];
 
@@ -76,6 +75,9 @@
 
                 /** to store the number of frames */
                 upLimitNum = data.frames;
+
+                /** to store the fps */
+                videoFPS = data.fps;
 
                 /** get point A, B, C from the first frame to calculate the width and height of the logo */
                 const x0 = parseData['A'][0].x;
@@ -183,11 +185,15 @@
         }
 
         function initData(path, obj) {
-            $.getJSON('./static.json', function(data) {
+            $.getJSON(path, function(data) {
                 /*optional stuff to do after success */
                 const parseData = data.staticData;
 
+                /** to store the number of frames */
                 upLimitNum = data.frames;
+
+                /** to store the fps */
+                videoFPS = data.fps;
 
                 /**
                  * [count: frames number]
