@@ -1,5 +1,11 @@
 {
-	"data":	[{
+	"time":	"56.2191s",
+	"width":	1920,
+	"height":	1080,
+	"startFrame":	0,
+	"countFrame":	755,
+	"frames":	759,
+	"staticData":	[{
 			"isStatic":	"true"
 		}, {
 			"isStatic":	"true"
@@ -198,6 +204,8 @@
 		}, {
 			"isStatic":	"true"
 		}, {
+			"isStatic":	"true"
+		}, {
 			"isStatic":	"false"
 		}, {
 			"isStatic":	"false"
@@ -1508,11 +1516,13 @@
 		}, {
 			"isStatic":	"true"
 		}, {
-			"isStatic":	"false"
+			"isStatic":	"true"
 		}, {
-			"isStatic":	"false"
+			"isStatic":	"true"
 		}, {
-			"isStatic":	"false"
+			"isStatic":	"true"
+		}, {
+			"isStatic":	"true"
 		}],
-	"time":	"381.462s"
+	"data":	{}
 }
