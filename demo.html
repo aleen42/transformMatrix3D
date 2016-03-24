@@ -75,10 +75,10 @@
                 // });
 
                 /** to store the number of frames */
-                upLimitNum = data.frames;
+                upLimitNum = data[0].frames;
 
                 /** to store the fps */
-                videoFPS = data.fps;
+                videoFPS = data[0].fps;
 
                 /** get point A, B, C from the first frame to calculate the width and height of the logo */
                 const x0 = parseData['A'][0].x;
