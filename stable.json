@@ -4,6 +4,7 @@
 	"height":	1080,
 	"startFrame":	0,
 	"countFrame":	100,
+	"fps":	23.976024,
 	"frames":	759,
 	"data":	{
 		"A":	[{
