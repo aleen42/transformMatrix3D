@@ -1,0 +1,84 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #000;
+}
+
+.play-container {
+	position: relative;
+	width: 50%;
+	height: 640px;
+	margin: 20px auto 0 20px;
+	text-align: center;
+}
+
+.mask, #video-player, #video-box, #canvas-box {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#canvas-box {
+	z-index: 3;
+}
+
+.mask {
+	background-size: auto 50%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#box1 {
+	background-image: url(./../images/soundtooth_logo.png);
+	
+	/** test1111 case background */
+	/*background-color: #fffeff;*/
+
+	/*background-image: url(./../images/input.png);*/
+	/*background-image: url(./../images/google.png);*/
+	/*background-image: url(./../images/apple.png);*/
+	z-index: 2;
+}
+
+#box2 {
+	background-image: url(./../images/libai.png);
+	z-index: 3;
+}
+
+#box3 {
+	border-radius: 4px;
+	font-size: 1.6em;
+	font-family: Arial;
+	padding: 0 5px;
+	color: #333;
+	background-color: rgba(0, 0, 0, 0.6);
+	/*transition: color 0.4s;*/
+	/*-webkit-transition: color 0.4s;*/
+	z-index: 4;
+	left: 15px;
+	top: 15px;
+}
+
+#image-box {
+	display: none;
+}
+
+#video-player {
+	width: 100%;
+}
+
+.btn-change-image {
+	width: 100px;
+	height: 26px;
+	background-color: #6799ff;
+	border-radius: 4px;
+	color: #fff;
+	line-height: 26px;
+	text-align: center;
+	clear: both;
+	margin: 0 auto;
+	cursor: pointer;
+}
