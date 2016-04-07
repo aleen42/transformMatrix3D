@@ -25,6 +25,11 @@
 
 #box1 {
 	background-image: url(./../images/soundtooth_logo.png);
+	
+	/** test1111 case background */
+	background-color: #fffeff;
+
+
 	/*background-image: url(./../images/input.png);*/
 	/*background-image: url(./../images/google.png);*/
 	/*background-image: url(./../images/apple.png);*/

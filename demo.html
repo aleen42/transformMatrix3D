@@ -11,10 +11,12 @@
     <div class="play-container">
         <div id="box1" class="mask"></div>
         <div id="box2" class="mask"></div>
-        <div id="box3" class="mask">move</div>
+        <!-- <div id="box3" class="mask">move</div> -->
         <video id="video-player" controls="controls" loop webkit-playsinline>
             <!-- <source src="videos/output.mp4" type="video/mp4" /> -->
-            <source src="videos/test4.m4v" type="video/mp4" />
+            <source data_type="data_test1111.json" src="videos/test1111.mp4" type="video/mp4" />
+            <!-- <source data_type="data_test1112.json" src="videos/test1112.mp4" type="video/mp4" /> -->
+            <!-- <source src="videos/test4.m4v" type="video/mp4" /> -->
             <!-- <source src="videos/kk.mp4" type="video/mp4" /> -->
         </video>
         <!-- <canvas id="canvas-box" width="640" height="480"></canvas> -->
@@ -45,11 +47,12 @@
         let upLimitNum = 0;
 
         $video.on('canplay', function () {
-            initBox('./data.json', $('#box1'), 0);
 
-            initBox('./stable.json', $('#box2'), 1);
+            initBox('./' + $video.find('source').attr('data_type'), $('#box1'), 0);
 
-            initData('./static1.json', $('#box3'));
+            // initBox('./stable.json', $('#box2'), 1);
+
+            // initData('./static1.json', $('#box3'));
         });
 
         function initBox(path, obj, index) {
@@ -140,7 +143,13 @@
                     ratio = $video.width() / data[0].width;
 
                     /** to calculate current data sets of points */
-                    parseData = data[currentDataPeriod].data;
+                    if (typeof(data[currentDataPeriod]) == 'undefined') {
+                        obj.hide();
+                        return;
+                    } else {
+                        obj.show();
+                        parseData = data[currentDataPeriod].data;
+                    }
 
                     /** to re-calculate the index */
                     count -= data[currentDataPeriod].startFrame;
@@ -240,5 +249,4 @@
     });
     </script>
 </body>
-
 </html>
