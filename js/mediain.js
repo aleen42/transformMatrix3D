@@ -119,6 +119,8 @@ var mediain = {
         json = json || '';
 
         if (json != '') {
+            var data = JSON.parse(json);
+
             /** optional stuff to do after success */
             var parseData = data[0].data;
 
