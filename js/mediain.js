@@ -119,8 +119,6 @@ var mediain = {
         json = json || '';
 
         if (json != '') {
-            var data = JSON.parse(json);
-
             /** optional stuff to do after success */
             var parseData = data[0].data;
 
@@ -254,8 +252,7 @@ var mediain = {
                 /** set attrs for the obj */
                 _this._transformInstances[index].setObj(obj, dest, logoWidth, logoHeight);
                 // canvasTransformObj.stretchImage(dest);
-
-
+            }, 1));
         } else {
             $.getJSON(path, function (data) {
                 /** optional stuff to do after success */
